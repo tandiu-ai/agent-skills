@@ -13,7 +13,7 @@ Sectors: foundation_model ai_app agent chip compute robotics autonomous infra_to
 import argparse, json, sys, urllib.request
 from collections import defaultdict
 
-SKILL, VERSION = "tandiu-ai-funding", "0.1.0"
+SKILL, VERSION = "tandiu-ai-funding", "0.1.1"
 BASES = ("https://www.tandiu.cn", "https://tandiuai.cn")  # main site, then mainland mirror
 HEADERS = {"User-Agent": f"TANDIU-Skill/{SKILL}/{VERSION}", "X-TANDIU-Client": "skill", "Accept": "application/json"}
 SECTORS = ["foundation_model", "ai_app", "agent", "chip", "compute", "robotics", "autonomous", "infra_tools", "vertical", "other"]
@@ -68,9 +68,12 @@ def deals(a):
 def slim(r):
     keep = ("date", "company", "company_en", "company_zh", "region", "country", "business_en", "business_zh", "sector", "round",
             "status", "amount_text", "amount_usd", "amount_cumulative", "valuation_text", "valuation_usd",
-            "lead_investors", "investors", "website")
+            "amount_conflict", "valuation_conflict", "lead_investors", "investors", "website")
     s = {k: r.get(k) for k in keep if r.get(k) not in (None, "", [])}
-    s["sources"] = [{k: x.get(k) for k in ("title", "publisher", "date", "url")} for x in (r.get("sources") or [])[:3]]
+    src = sorted(r.get("sources") or [], key=lambda x: x.get("date") or "", reverse=True)
+    s["n_sources"] = len(src)
+    # newest reports first: early reports of a round often carry a preliminary amount
+    s["sources"] = [{k: x.get(k) for k in ("title", "publisher", "date", "url")} for x in src[:3]]
     return s
 
 

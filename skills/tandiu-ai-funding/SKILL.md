@@ -50,6 +50,7 @@ TANDIU 每天从多家媒体抓取 AI 公司融资新闻,抽取公司、轮次�
 - `amount_cumulative: true` 表示报道只给了多轮**累计**金额,不是单轮,不能计入合计或排名(`stats` 已排除)。
 - `list` 输出的 `matched_disclosed_usd` 是全部命中条目(不受 `--limit` 限制、已排除累计金额)的披露金额合计,问"一共融了多少"直接用它。
 - `--query` 逗号分隔为任一匹配(`--query "Moonshot,月之暗面"`),同时匹配投资方,搜机构名可能命中名字相近的其他机构,回答前核对 `lead_investors` / `investors`。
+- `sources` 按报道日期从新到旧列 3 条(`n_sources` 为总数);`amount_conflict` 列出与主值不同的其他报道金额,一轮融资初期常有较小的初传规模,以多数报道和最新报道为准,有分歧时在回答里说明。
 - 字段详解见 [reference/fields.md](reference/fields.md)。
 
 ## 引用要求
