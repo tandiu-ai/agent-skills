@@ -1,0 +1,14 @@
+{
+  "name": "tandiu-agent-skills",
+  "owner": {"name": "TANDIU", "email": "contact@tandiu.cn"},
+  "metadata": {"description": "Live AI infrastructure data from TANDIU (tandiu.cn): LLM/GPU cost, China AI procurement, AI funding", "version": "0.1.0"},
+  "plugins": [
+    {
+      "name": "tandiu-data",
+      "description": "TANDIU data skills: LLM API and GPU cost, China government AI/compute procurement, AI funding rounds. Read-only, no keys.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/tandiu-llm-cost", "./skills/tandiu-cn-ai-procurement", "./skills/tandiu-ai-funding"]
+    }
+  ]
+}
