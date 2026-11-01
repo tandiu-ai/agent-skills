@@ -12,6 +12,8 @@
 | cache_read_usd_per_1m | 缓存命中读取价;空字符串 = 厂商未公布 | 美元/百万 tokens |
 | blended_rmb_per_1m | 混合价人民币(按 `fx_usdcny` 换算,国产模型为原价) | 元/百万 tokens |
 | context_k | 上下文长度 | 千 tokens |
+| long_context | 长上下文分档价;`null` = 无分档。单次请求提示词(含缓存读写)超过 `threshold_tokens` 时,**整次请求**按此档的 `input_usd_per_1m` / `output_usd_per_1m` / `cache_*_usd_per_1m` / `blended_usd_per_1m` 计价 | tokens;美元/百万 tokens |
+| intro_price | 首发优惠价;`null` = 无。上面的牌价是首发价,`until` 之后按 `regular_input_usd_per_1m` / `regular_output_usd_per_1m` 计价,`source_url` 为厂商公告 | 日期;美元/百万 tokens |
 | aa_index | Artificial Analysis Intelligence Index | 分 |
 | livebench | LiveBench 2.0 总分 | 分 |
 | source_url / verified_at | 厂商定价页 / 核价日期 | — |

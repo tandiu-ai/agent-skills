@@ -62,6 +62,8 @@ TANDIU 每天从厂商官方定价页、公开报价接口抓取大模型牌价�
 ## 怎么解读
 
 - 单位:`*_usd_per_1m` = 美元/百万 tokens;`*_rmb_per_1m`、`*_cny` = 人民币。混合价 blended = (3×输入 + 1×输出)/4。
+- **长上下文分档**:`long_context` 不为 `null` 的模型,单次请求提示词超过 `threshold_tokens` 时整次请求按该档计价(可能是基础价的数倍)。估算长文档、长对话、大代码库的成本,或按 `cheapest` 选模型时,先看这一项,别只用基础价。
+- **首发价**:`intro_price` 不为 `null` 时,当前牌价是限时首发价,`until` 之后按 `regular_*` 计价;做月度/长期预算要提醒用户。
 - 牌价是厂商**官方**列表价,不含折扣、批量价、三方渠道价。`verified_at` 是核价日期,`source_url` 是厂商定价页。
 - 评测分 `aa_index`(Artificial Analysis 智能指数)、`livebench`(LiveBench 2.0 总分)是第三方公开榜单的转录,TANDIU 不自测;为 `null` 表示该榜未收录,不要当 0。
 - GPU:SXM 卡(B300/B200/H200/H100)按 HGX 8 卡整机报价(`per_8gpu_node_cny`),也给出单卡折算;`cloud_rental` 是国际云市场时租,不代表中国大陆整卡采购价;价格均为区间。`china_available` 可能是一段说明文字(出口管制状态)。

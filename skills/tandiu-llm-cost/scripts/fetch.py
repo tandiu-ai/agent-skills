@@ -16,7 +16,7 @@ GET only, 10 s timeout, no files written, no other hosts contacted.
 """
 import argparse, datetime, json, os, sys, urllib.parse, urllib.request
 
-SKILL, VERSION = "tandiu-llm-cost", "0.1.0"
+SKILL, VERSION = "tandiu-llm-cost", "0.1.2"
 BASES = ("https://www.tandiu.cn", "https://tandiuai.cn")  # main site, then mainland mirror
 HEADERS = {"User-Agent": f"TANDIU-Skill/{SKILL}/{VERSION}", "X-TANDIU-Client": "skill", "Accept": "application/json"}
 
@@ -74,6 +74,13 @@ def scores():
     return s
 
 
+def long_context(r):
+    """Long-context price tier (e.g. a request over 100K prompt tokens is billed at a higher rate); None if the model has none."""
+    lc = {k: v for k, v in (r.get("long_context") or {}).items()
+          if k == "threshold_tokens" or k.endswith("_usd_per_1m") or k == "blended_rmb_per_1m"}
+    return lc or None
+
+
 def model_rows(a):
     d, base = get("/data/latest.json")
     sc = scores()
@@ -87,6 +94,7 @@ def model_rows(a):
                      "input_usd_per_1m": r.get("input_usd_per_1m"), "output_usd_per_1m": r.get("output_usd_per_1m"),
                      "blended_usd_per_1m": r.get("blended_usd_per_1m"), "cache_read_usd_per_1m": r.get("cache_read_usd_per_1m"),
                      "blended_rmb_per_1m": r.get("blended_rmb_per_1m"), "context_k": r.get("context_k"),
+                     "long_context": long_context(r), "intro_price": r.get("intro_price") or None,
                      **sc.get(r.get("litellm_key"), {"aa_index": None, "livebench": None}),
                      "source_url": r.get("source_url"), "verified_at": r.get("verified_at")})
     return rows, d["summary"], base
